@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Make Codes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Press Start 2P', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a202c; /* Dark background */
+            color: #f7fafc; /* Light text */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            transition: background-color 0.5s ease; /* Smooth transition for theme changes */
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px; /* Increased max-width for larger screens */
+            padding: 2rem;
+            text-align: center;
+            background-color: #2d3748; /* Slightly lighter container background */
+            border-radius: 0.75rem; /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Shadow for depth */
+            transition: background-color 0.5s ease; /* Smooth transition for theme changes */
+            margin: 1rem; /* Add margin to the container */
+        }
+
+        h1 {
+            font-size: 2rem; /* Larger heading */
+            margin-bottom: 1.5rem;
+            color: #f56565; /* Red color for "Car Make Codes" */
+            transition: color 0.5s ease; /* Smooth transition for theme changes */
+        }
+
+        p {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            color: #cbd5e0;
+        }
+
+        #question-area {
+            font-size: 1.25rem; /* Increased font size */
+            margin-bottom: 1.5rem; /* Increased margin */
+            padding: 1rem;
+            border: 2px solid #4a5568; /* Darker border */
+            border-radius: 0.5rem;
+            background-color: #374151; /* Slightly lighter question area background */
+            transition: background-color 0.5s ease, border-color 0.5s ease; /* Smooth transitions */
+            min-height: 3rem; /* Ensure question area has a minimum height */
+            display: flex;
+            align-items: center; /* Vertically center the question text */
+            justify-content: center; /* horizontally center the question text */
+            word-wrap: break-word; /* handle long words */
+        }
+
+        #answer-input {
+            padding: 0.75rem; /* Increased padding */
+            font-size: 1rem; /* Increased font size */
+            border: 1px solid #718096; /* Darker border */
+            border-radius: 0.5rem;
+            width: calc(100% - 2rem); /* Adjusted width, accounting for padding */
+            max-width: 400px; /* Maximum width for the input */
+            margin: 0 auto 1.5rem; /* Center input and add margin below */
+            background-color: #edf2f7; /* Light background for input */
+            color: #1a202c; /* Dark text color */
+            transition: border-color 0.3s ease, background-color 0.3s ease; /* Smooth transitions */
+            display: block; /* Ensure block display for centering */
+        }
+
+        #answer-input:focus {
+            outline: none;
+            border-color: #f56565; /* Highlight border on focus */
+            box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.5); /* Add a soft shadow */
+            background-color: #fff; /* slightly lighten background on focus */
+        }
+
+
+        #check-answer-button {
+            padding: 0.75rem 1.5rem; /* Increased padding */
+            font-size: 1rem;
+            background-color: #f56565; /* Red button */
+            color: #fff;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+            margin-bottom: 1rem;
+            font-family: 'Press Start 2P', sans-serif;
+        }
+
+        #check-answer-button:hover {
+            background-color: #c53030; /* Darker red on hover */
+            transform: translateY(-2px); /* Slight lift on hover */
+        }
+
+        #feedback {
+            font-size: 1.25rem; /* Increased font size */
+            margin-bottom: 1.5rem; /* Increased margin */
+            min-height: 3rem; /* Ensure feedback area has minimum height */
+            display: flex;
+            align-items: center; /* Vertically center feedback text */
+            justify-content: center;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-weight: bold;
+            transition: background-color 0.5s ease, color 0.5s ease; /* Smooth transitions */
+            word-wrap: break-word; /* handle long words */
+        }
+
+        .correct {
+            background-color: #48bb78; /* Green for correct */
+            color: #fff;
+        }
+
+        .incorrect {
+            background-color: #f56565; /* Red for incorrect */
+            color: #fff;
+        }
+
+        #score {
+            font-size: 1.25rem; /* Increased font size */
+            margin-bottom: 1.5rem; /* Increased margin */
+            color: #f56565;
+            transition: color 0.5s ease; /* Smooth transition */
+        }
+
+        #reset-button {
+            padding: 0.75rem 1.5rem; /* Increased padding */
+            font-size: 1rem;
+            background-color: #68d391; /* Green reset button */
+            color: #1a202c;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+            margin-top: 0.5rem;
+            font-family: 'Press Start 2P', sans-serif;
+        }
+
+        #reset-button:hover {
+            background-color: #48bb78; /* Darker green on hover */
+            transform: translateY(-2px);
+        }
+
+       .game-over-overlay {
+            position: fixed; /* Use fixed positioning to cover the entire viewport */
+            inset: 0; /* shorthand for top, bottom, left, right: 0 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.8); /* Dark semi-transparent overlay */
+            z-index: 10; /* Ensure it's on top of everything else */
+            transition: opacity 0.5s ease; /* For potential fade-in effect */
+        }
+
+        .game-over-content {
+            background-color: #374151; /* Darker background for the game over box */
+            color: #fff;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            border: 2px solid #6b7280; /* Darker border */
+        }
+
+        .game-over-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #f56565; /* Red color for game over title */
+        }
+
+        .game-over-score {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #cbd5e0;
+        }
+
+    </style>
+</head>
+<body class="bg-gray-800 text-gray-50">
+    <div class="container">
+        <h1 class="text-red-500">Car Make Codes</h1>
+        <p>Enter the correct car make for the given code:</p>
+
+        <div id="question-area" class="bg-gray-700 text-white border-gray-600"></div>
+
+        <input type="text" id="answer-input" placeholder="Enter car make" class="bg-gray-100 text-gray-800 border-gray-400 focus:border-red-500">
+
+        <button id="check-answer-button" class="bg-red-500 text-white hover:bg-red-600">Check Answer</button>
+
+        <div id="feedback" class="text-white"></div>
+
+        <div id="score" class="text-red-500">Score: 0</div>
+
+        <button id="reset-button" class="bg-green-500 text-gray-800 hover:bg-green-600">Reset Game</button>
+
+        <div class="game-over-overlay" style="display: none;">
+                <div class="game-over-content">
+                    <h2 class="game-over-title">Game Over</h2>
+                    <p class="game-over-score">Final Score: <span id="final-score"></span></p>
+                    <button id="new-game-button" class="bg-blue-500 text-white hover:bg-blue-600 py-2 px-4 rounded-md font-family: 'Press Start 2P', sans-serif;">New Game</button>
+                </div>
+            </div>
+
+    </div>
+
+    <script>
+        const carMakeCodes = {
+            "ALF": "Alfa Romeo",
+            "AUD": "Audi",
+            "BMW": "BMW",
+            "VOL": "Volvo",
+            "MBZ": "Mercedes-Benz",
+            "FRD": "Ford",
+            "HND": "Honda",
+            "HYU": "Hyundai",
+            "JPN": "Jeep",
+            "KIA": "Kia",
+            "MAZ": "Mazda",
+            "NIS": "Nissan",
+            "SUB": "Subaru",
+            "TOY": "Toyota",
+            "VWW": "Volkswagen",
+        };
+
+        let score = 0;
+        let currentCode;
+        let gameStarted = false;
+        let currentQuestionIndex = 0;
+        let usedCodes = new Set();
+        const maxQuestions = 10; // You can adjust this number
+
+        const questionArea = document.getElementById("question-area");
+        const answerInput = document.getElementById("answer-input");
+        const checkAnswerButton = document.getElementById("check-answer-button");
+        const feedback = document.getElementById("feedback");
+        const scoreDisplay = document.getElementById("score");
+        const resetButton = document.getElementById("reset-button");
+        const gameOverOverlay = document.querySelector(".game-over-overlay");
+        const finalScoreDisplay = document.getElementById("final-score");
+        const newGameButton = document.getElementById("new-game-button");
+
+
+        function getRandomCode() {
+            if (usedCodes.size >= Object.keys(carMakeCodes).length) {
+                return null; // All codes have been used
+            }
+            let code;
+            do {
+                const codes = Object.keys(carMakeCodes);
+                code = codes[Math.floor(Math.random() * codes.length)];
+            } while (usedCodes.has(code));
+            usedCodes.add(code);
+            return code;
+        }
+
+        function displayQuestion() {
+            currentCode = getRandomCode();
+            if (currentCode === null) {
+                endGame(); // Call endGame function when all codes are used.
+                return;
+            }
+            questionArea.textContent = `What car make is this code: ${currentCode}?`;
+            answerInput.value = "";
+            feedback.textContent = ""; // Clear feedback from previous question
+            answerInput.focus();
+        }
+
+        function checkAnswer() {
+            if (!gameStarted) return;
+
+            const userAnswer = answerInput.value.trim().toLowerCase();
+            const correctMake = carMakeCodes[currentCode].toLowerCase();
+
+            if (userAnswer === correctMake) {
+                feedback.textContent = "Correct!";
+                feedback.className = "correct";
+                score++;
+                scoreDisplay.textContent = `Score: ${score}`;
+            } else {
+                feedback.textContent = "Incorrect!";
+                feedback.className = "incorrect";
+            }
+
+            currentQuestionIndex++;
+             if (currentQuestionIndex >= maxQuestions) {
+                endGame();
+                return;
+             }
+            displayQuestion();
+        }
+
+        function endGame() {
+            gameStarted = false;
+            finalScoreDisplay.textContent = score;
+            gameOverOverlay.style.display = "flex";
+        }
+
+        function startGame() {
+            score = 0;
+            currentQuestionIndex = 0;
+            usedCodes.clear();
+            scoreDisplay.textContent = `Score: ${score}`;
+            gameOverOverlay.style.display = "none";
+            gameStarted = true;
+            displayQuestion();
+            answerInput.focus();
+        }
+
+        function resetGame() {
+            startGame();
+        }
+
+        checkAnswerButton.addEventListener("click", checkAnswer);
+        resetButton.addEventListener("click", resetGame);
+        newGameButton.addEventListener("click", startGame); // Start new game on button click
+
+        // Start the game when the page loads
+        startGame();
+    </script>
+</body>
+</html>
